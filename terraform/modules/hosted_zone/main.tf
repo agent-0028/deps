@@ -8,8 +8,7 @@ variable "env" {
 }
 
 variable "env-suffix" {
-  type    = string
-  default = "dev"
+  type = string
 }
 
 variable "name" {
