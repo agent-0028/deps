@@ -89,4 +89,5 @@ locals {
   openai_mantle_base_url = "https://bedrock-mantle.${local.region}.api.aws/v1"
   iam_user_name          = "bedrock-inference${var.env-suffix}"
   inference_profile_name = "bedrock-inference${var.env-suffix}"
+  mantle_project_arn     = "arn:aws:bedrock-mantle:${local.region}:${data.aws_caller_identity.current.account_id}:project/*"
 }

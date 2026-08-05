@@ -49,6 +49,17 @@ resource "aws_iam_user_policy" "invoke" {
         Effect = "Allow"
         Action = [
           "bedrock-mantle:CreateInference",
+        ]
+        Resource = local.mantle_project_arn
+        Condition = {
+          StringEquals = {
+            "bedrock-mantle:Model" = local.resolved_model_id
+          }
+        }
+      },
+      {
+        Effect = "Allow"
+        Action = [
           "bedrock-mantle:CallWithBearerToken",
         ]
         Resource = "*"
