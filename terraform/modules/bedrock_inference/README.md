@@ -27,6 +27,18 @@ Amazon hosts the HTTP endpoints; this module does not. Pick the base URL and mod
 
 Anthropic on mantle uses the **Messages API** (`/anthropic/v1/messages`), not `openai_mantle_base_url` Chat Completions. Prefer **`openai` or `indie`** for OpenAI SDK smoke tests.
 
+## IAM scope
+
+The module API key can invoke only the configured model:
+
+| Path | IAM | Scope |
+|------|-----|-------|
+| Runtime / Pi | `bedrock:InvokeModel*` | Application inference profile + `provision_model_id` source ARN |
+| Mantle Chat Completions | `bedrock-mantle:CreateInference` | `bedrock-mantle:Model` condition = `model_id` output |
+| Mantle API key auth | `bedrock-mantle:CallWithBearerToken` | `Resource = "*"` (auth-only; AWS requires this for bearer tokens) |
+
+Wrong mantle model IDs in client requests should fail after deploy. `CallWithBearerToken` on `*` does not grant inference by itself — it only enables API-key authentication; model access is enforced on `CreateInference`.
+
 ## Unit tests
 
 Tests live in `tests/` and use **mocked** AWS providers — no credentials, no remote state, and no connection to prod or nonprod.

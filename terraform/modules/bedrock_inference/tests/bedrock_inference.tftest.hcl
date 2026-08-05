@@ -406,12 +406,40 @@ run "iam_policy_includes_mantle_for_openai_sdk" {
   command = plan
 
   variables {
-    attributes = { tier = "fast", vendor = "anthropic" }
+    attributes = { tier = "fast", vendor = "openai" }
   }
 
   assert {
     condition     = can(regex("bedrock-mantle:CreateInference", aws_iam_user_policy.invoke[0].policy))
     error_message = "IAM policy should allow bedrock-mantle for OpenAI SDK clients"
+  }
+
+  assert {
+    condition     = can(regex("bedrock-mantle:CallWithBearerToken", aws_iam_user_policy.invoke[0].policy))
+    error_message = "IAM policy should allow bearer-token auth for Bedrock API keys"
+  }
+}
+
+run "iam_policy_scopes_mantle_inference_to_model" {
+  command = plan
+
+  variables {
+    attributes = { tier = "fast", vendor = "openai" }
+  }
+
+  assert {
+    condition     = can(regex("arn:aws:bedrock-mantle:us-west-2:123456789012:project/\\*", aws_iam_user_policy.invoke[0].policy))
+    error_message = "CreateInference should be scoped to mantle project ARNs in the account"
+  }
+
+  assert {
+    condition     = can(regex("bedrock-mantle:Model", aws_iam_user_policy.invoke[0].policy))
+    error_message = "CreateInference should include a bedrock-mantle:Model condition"
+  }
+
+  assert {
+    condition     = can(regex("openai\\.gpt-oss-20b", aws_iam_user_policy.invoke[0].policy))
+    error_message = "CreateInference should be limited to the resolved mantle model_id"
   }
 }
 
