@@ -38,15 +38,19 @@ Prefer focused commits — one logical change per module when practical.
 
 ```
 terraform/modules/
-  config/        # env, env-suffix, env-prefix, repo outputs
-  bucket/        # S3 bucket with env-suffix naming
-  hosted_zone/   # Route53 hosted zone
-  dns_record/    # Route53 record
-  dns_alias/     # Route53 alias record
+  config/              # env, env-suffix, env-prefix, repo outputs — see README.md
+  bucket/              # S3 bucket with env-suffix naming — see README.md
+  object/              # S3 object upload — see README.md
+  hosted_zone/         # Route53 hosted zone — see README.md
+  dns_record/          # Route53 record — see README.md
+  dns_alias/           # Route53 alias record — see README.md
+  bedrock_inference/   # Bedrock IAM, API key, inference profile — see README.md
 github_actions/
   install-tofu-client/   # reusable composite action
 plans/                 # design and implementation plans
 ```
+
+Each module under `terraform/modules/` has a `README.md` with usage examples for consumer repos. Live wiring samples are in [deps-examples](https://github.com/agent-0028/deps-examples).
 
 ## env-suffix convention
 
