@@ -61,6 +61,7 @@ resource "aws_iam_user_policy" "invoke" {
         Effect = "Allow"
         Action = [
           "bedrock-mantle:CallWithBearerToken",
+          "bedrock:CallWithBearerToken",
         ]
         Resource = "*"
       },

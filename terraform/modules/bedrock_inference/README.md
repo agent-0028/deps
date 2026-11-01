@@ -82,6 +82,7 @@ When `create_api_key = true` (default), the module API key can invoke only the c
 | Runtime / Converse / Pi | `bedrock:InvokeModel*` | Application inference profile + `provision_model_id` source ARN |
 | Mantle Chat Completions | `bedrock-mantle:CreateInference` | `bedrock-mantle:Model` condition = `model_id` output |
 | Mantle API key auth | `bedrock-mantle:CallWithBearerToken` | `Resource = "*"` (auth-only; AWS requires this for bearer tokens) |
+| Runtime API key auth | `bedrock:CallWithBearerToken` | `Resource = "*"` (auth-only; required for Pi / Converse with an API key) |
 
 Wrong mantle model IDs in client requests should fail after deploy. `CallWithBearerToken` on `*` does not grant inference by itself — it only enables bearer-token authentication; model access is enforced on `CreateInference`.
 

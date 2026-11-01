@@ -418,6 +418,11 @@ run "iam_policy_includes_mantle_for_openai_sdk" {
     condition     = can(regex("bedrock-mantle:CallWithBearerToken", aws_iam_user_policy.invoke[0].policy))
     error_message = "IAM policy should allow bearer-token auth for Bedrock API keys"
   }
+
+  assert {
+    condition     = can(regex("\"bedrock:CallWithBearerToken\"", aws_iam_user_policy.invoke[0].policy))
+    error_message = "IAM policy should allow runtime bearer-token auth for Bedrock API keys"
+  }
 }
 
 run "iam_policy_scopes_mantle_inference_to_model" {
